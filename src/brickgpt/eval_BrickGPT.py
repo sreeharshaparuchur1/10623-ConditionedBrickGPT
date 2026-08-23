@@ -58,6 +58,12 @@ def main():
         default=None,
         help='Limit the number of rows processed'
     )
+    parser.add_argument(
+        '--model_name_or_path',
+        type=str,
+        default=None,
+        help='HF model repo id or local path to evaluate. Defaults to BrickGPTConfig default (AvaLovelace/BrickGPT).'
+    )
     args = parser.parse_args()
 
     # Setup paths
@@ -80,7 +86,7 @@ def main():
     transformers.set_seed(args.seed)
 
     # Prepare config and BrickGPT object (same as batch_infer.py)
-    cfg = BrickGPTConfig()
+    cfg = BrickGPTConfig() if args.model_name_or_path is None else BrickGPTConfig(model_name_or_path=args.model_name_or_path)
     brickgpt = BrickGPT(cfg)
 
     # Load dataset
